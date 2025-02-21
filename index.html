@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Palindrome Checker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+        }
+        input, button {
+            padding: 10px;
+            margin: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h2>Palindrome Checker</h2>
+    <input type="number" id="numberInput" placeholder="Enter a number">
+    <button onclick="checkPalindrome()">Check</button>
+    <p id="result"></p>
+
+    <script>
+        async function checkPalindrome() {
+            const number = document.getElementById("numberInput").value;
+            if (!number) {
+                document.getElementById("result").innerText = "Please enter a number.";
+                return;
+            }
+
+            const response = await fetch("http://localhost:3000/check", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ number })
+            });
+
+            const data = await response.json();
+            document.getElementById("result").innerText = data.error || 
+                `The number ${data.number} is ${data.isPalindrome ? "" : "not "}a palindrome.`;
+        }
+    </script>
+</body>
+</html>
